@@ -4,255 +4,178 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Proyecto de Feed</title>
-
-    <!-- Hoja de estilos de Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-    <!-- Script para los iconos de FontAwesome -->
     <script src="https://kit.fontawesome.com/072e5df971.js" crossorigin="anonymous"></script>
 
-    <!-- Estilos personalizados (sin estilos inline) -->
-    <style>
-        /* Pestañas de vista */
-        .nav-pills .nav-link {
-            color: #6c757d;
-        }
-
-        .nav-pills .nav-link.active {
-            color: #0d6efd;
-            background-color: transparent;
-        }
-
-        /* Fotos del grid: altura responsive usando vw con límite en pantallas grandes */
-        .foto-grid {
-            height: 30vw;
-            object-fit: cover;
-        }
-
-        /* En pantallas grandes, limitar la altura del grid para que no quede enorme */
-        @media (min-width: 992px) {
-            .foto-grid {
-                height: 20vw;
-            }
-        }
-
-        /* Imagen del feed (vista lista) */
-        .foto-feed {
-            object-fit: cover;
-            width: 100%;
-        }
-    </style>
+    <title>My Instagram Feed</title>
 </head>
 
 <body>
-    <!-- Barra superior de navegación colapsable (Navbar Responsive) -->
-    <nav class="navbar navbar-expand-md navbar-light bg-light py-3">
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
         <div class="container-fluid">
-
-            <!-- Brand / Logo (siempre visible) -->
-            <a class="navbar-brand d-flex align-items-center" href="#">
-                <i class="fa-brands fa-instagram fa-xl"></i>
-                <span class="fs-5 ms-1">Instagram</span>
-            </a>
-
-            <!-- Botón hamburguesa: solo visible en pantallas pequeñas (< md) -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#menuNavbar" aria-controls="menuNavbar"
-                aria-expanded="false" aria-label="Abrir menú">
+            <a class="navbar-brand" href="#"><i class="fa-brands fa-instagram"></i>My Instagram Feed</a>
+            <!-- Le estoy diciendo al boton que colapse con el Menu  -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <!-- Contenido colapsable del navbar -->
-            <div class="collapse navbar-collapse justify-content-end" id="menuNavbar">
-                <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
-
-                    <!-- Botón para abrir el modal de nueva publicación -->
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                        data-bs-target="#modalNuevaPublicacion">
-                        Crear publicación
+            <div class="collapse navbar-collapse justify-content-end" id="menu">
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalPublicacion">
+                    Crear publicación
+                </button>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fa-solid fa-gear"></i>
                     </button>
-
-                    <!-- Menú desplegable de opciones -->
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="botonOpciones"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-gear"></i>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="botonOpciones">
-                            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
-                            <li><a class="dropdown-item" href="#">Accesibilidad</a></li>
-                            <li><a class="dropdown-item" href="#">Privacidad y datos</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item text-danger" href="#">Cerrar sesión</a></li>
-                        </ul>
-                    </div>
-
+                    <!-- Uso un ul para crear el menu desplegable, cada li es un item del menu, y cada a es un link dentro del item del menu -->
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
+                        <li><a class="dropdown-item" href="#">Cerrar sesión</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
     </nav>
-
-    <!-- Contenedor principal del Feed -->
-    <div class="container-fluid p-2">
-
-        <!-- Pestañas para cambiar entre vista de cuadrícula y vista de lista -->
-        <ul class="nav nav-pills justify-content-center mb-3" id="pestanasVista" role="tablist">
-            <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="tab-cuadricula" data-bs-toggle="tab"
-                    data-bs-target="#vista-cuadricula" type="button" role="tab"
-                    aria-controls="vista-cuadricula" aria-selected="true">
-                    <i class="fa-solid fa-table-cells"></i>
-                </a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" id="tab-lista" data-bs-toggle="tab"
-                    data-bs-target="#vista-lista" type="button" role="tab"
-                    aria-controls="vista-lista" aria-selected="false">
-                    <i class="fa-solid fa-square"></i>
-                </a>
-            </li>
-        </ul>
-
-        <div class="tab-content" id="contenidoPestanas">
-
-            <!-- Vista 1: Cuadrícula Responsive -->
-            <!-- col-6 = 2 columnas en móvil, col-md-4 = 3 en tablet, col-lg-3 = 4 en desktop -->
-            <div class="tab-pane fade show active overflow-hidden" id="vista-cuadricula"
-                role="tabpanel" aria-labelledby="tab-cuadricula">
-                <div class="row g-1">
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <img src="https://tse2.mm.bing.net/th/id/OIP.lLbG6PUD9TNqpxW2Pvr75gHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
-                            class="img-fluid w-100 foto-grid" alt="Mono">
+    <!-- Este es el menu de feed a grid -->
+    <ul class="nav nav-pills justify-content-center my-3">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#cuadricula">
+                <i class="fa-solid fa-table-cells"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#lista">
+                <i class="fa-solid fa-square"></i>
+            </a>
+        </li>
+    </ul>
+    <!-- Este es elcontenido de las imagenes -->
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="cuadricula">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <div class="ratio ratio-1x1">
+                            <img src="https://tse2.mm.bing.net/th/id/OIP.Myyz7aQk6tEnZb8jVA03AwHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
+                                class="img-fluid w-100 object-fit-cover" alt="descripcion">
+                        </div>
                     </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <img src="https://tiermaker.com/images/templates/personajes-random-15746187/157461871682367998.jpg"
-                            class="img-fluid w-100 foto-grid" alt="Calamardo">
+                    <div class="col-12 col-md-4">
+                        <div class="ratio ratio-1x1">
+                            <img src="https://statics.viralizalo.com/virs/2016/01/VIR_66821_5963_cuanto_sabes_de_las_islas_canarias.jpg?cb=74806"
+                                class="img-fluid w-100 object-fit-cover" alt="descripcion">
+                        </div>
                     </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <img src="https://tse1.mm.bing.net/th/id/OIP.xSHJOVZPE3kqSY8HzXdm8AHaE8?rs=1&pid=ImgDetMain&o=7&rm=3"
-                            class="img-fluid w-100 foto-grid" alt="Mascota">
+                    <div class="col-12 col-md-4">
+                        <div class="ratio ratio-1x1">
+                            <img src="https://facts.net/wp-content/uploads/2023/07/31-facts-about-michael-jackson-1688465572.jpg"
+                                class="img-fluid w-100 object-fit-cover" alt="descripcion">
+                        </div>
                     </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <img src="https://newfordmodel.com/wp-content/uploads/2025/01/new-2026-ford-mustang-dark-horse-release-date.jpg"
-                            class="img-fluid w-100 foto-grid" alt="Mustang">
+                    <div class="col-12 col-md-4">
+                        <div class="ratio ratio-1x1">
+                            <img src="https://tiermaker.com/images/templates/personajes-random-15746187/157461871682367998.jpg"
+                                class="img-fluid w-100 object-fit-cover" alt="descripcion">
+                        </div>
                     </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <img src="https://tse3.mm.bing.net/th/id/OIP.txJL3yIfTaA_fzGCd4VciQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
-                            class="img-fluid w-100 foto-grid" alt="Naturaleza">
+                    <div class="col-12 col-md-4">
+                        <div class="ratio ratio-1x1">
+                            <img src="https://tse1.mm.bing.net/th/id/OIP.xSHJOVZPE3kqSY8HzXdm8AHaE8?rs=1&pid=ImgDetMain&o=7&rm=3"
+                                class="img-fluid w-100 object-fit-cover" alt="descripcion">
+                        </div>
                     </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <img src="https://facts.net/wp-content/uploads/2023/07/31-facts-about-michael-jackson-1688465572.jpg"
-                            class="img-fluid w-100 foto-grid" alt="Michael Jackson">
+                    <div class="col-12 col-md-4">
+                        <div class="ratio ratio-1x1">
+                            <img src="https://newfordmodel.com/wp-content/uploads/2025/01/new-2026-ford-mustang-dark-horse-release-date.jpg"
+                                class="img-fluid w-100 object-fit-cover" alt="descripcion">
+                        </div>
                     </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <img src="https://www.meganoticias.mx/uploads/noticias/cuerpo/estos-fueron-los-memes-mas-populares-del-2024-17353245745.jpg"
-                            class="img-fluid w-100 foto-grid" alt="Meme Gato">
+                    <div class="col-12 col-md-4">
+                        <div class="ratio ratio-1x1">
+                            <img src="https://www.meganoticias.mx/uploads/noticias/cuerpo/estos-fueron-los-memes-mas-populares-del-2024-17353245745.jpg"
+                                class="img-fluid w-100 object-fit-cover" alt="descripcion">
+                        </div>
                     </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <img src="https://statics.viralizalo.com/virs/2016/01/VIR_66821_5963_cuanto_sabes_de_las_islas_canarias.jpg?cb=74806"
-                            class="img-fluid w-100 foto-grid" alt="Canarias">
+                    <div class="col-12 col-md-4">
+                        <div class="ratio ratio-1x1">
+                            <img src="https://tiermaker.com/images/templates/personajes-random-15746187/157461871682367998.jpg"
+                                class="img-fluid w-100 object-fit-cover" alt="descripcion">
+                        </div>
                     </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <img src="https://tse2.mm.bing.net/th/id/OIP.Myyz7aQk6tEnZb8jVA03AwHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
-                            class="img-fluid w-100 foto-grid" alt="Paisaje">
+                    <div class="col-12 col-md-4">
+                        <div class="ratio ratio-1x1">
+                            <img src="https://newfordmodel.com/wp-content/uploads/2025/01/new-2026-ford-mustang-dark-horse-release-date.jpg"
+                                class="img-fluid w-100 object-fit-cover" alt="descripcion">
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Vista 2: Estilo Feed (lista de publicaciones) -->
-            <div class="tab-pane fade overflow-hidden" id="vista-lista"
-                role="tabpanel" aria-labelledby="tab-lista">
-
-                <!-- Publicación 1 -->
-                <div class="row my-4">
-                    <div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto border rounded p-0">
-                        <div class="d-flex p-2">
-                            <div class="w-100 fs-4">Calamardo Hermoso</div>
-                            <small class="text-muted">15/03</small>
-                        </div>
-                        <img src="https://tiermaker.com/images/templates/personajes-random-15746187/157461871682367998.jpg"
-                            class="foto-feed" alt="Calamardo Guapo">
-                        <div class="p-2">
-                            <strong>45.123 Me gusta</strong>
-                            <p>Un clásico de clásicos, nunca falla para hacer reír 😂</p>
-                        </div>
+        </div>
+        <div class="tab-pane fade" id="lista">
+            <div class="row my-4">
+                <div class="col-12 col-md-6 mx-auto border rounded">
+                    <div class="d-flex p-2">
+                        <span class="w-100 fs-4">Primera Publicación
+                        </span>
+                        <small class="text-muted">12/05</small>
+                    </div>
+                    <img src="https://newfordmodel.com/wp-content/uploads/2025/01/new-2026-ford-mustang-dark-horse-release-date.jpg"
+                        class="w-100" alt="descripcion">
+                    <div class="p-2">
+                        <strong>1.234 Me gusta</strong>
+                        <p>Primera publicación</p>
                     </div>
                 </div>
-
-                <!-- Publicación 2 -->
-                <div class="row my-4">
-                    <div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto border rounded p-0">
-                        <div class="d-flex p-2">
-                            <div class="w-100 fs-4">Un monito curioso</div>
-                            <small class="text-muted">28/04</small>
-                        </div>
-                        <img src="https://tse2.mm.bing.net/th/id/OIP.lLbG6PUD9TNqpxW2Pvr75gHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
-                            class="foto-feed" alt="Mono">
-                        <div class="p-2">
-                            <strong>8.432 Me gusta</strong>
-                            <p>De los animales más increíbles que existen. ¡Dicen que este era de Michael Jackson! 🐒</p>
-                        </div>
+            </div>
+            <div class="row my-4">
+                <div class="col-12 col-md-6 mx-auto border rounded">
+                    <div class="d-flex p-2">
+                        <span class="w-100 fs-4">Segunda Publicación</span>
+                        <small class="text-muted">12/05</small>
+                    </div>
+                    <img src="https://facts.net/wp-content/uploads/2023/07/31-facts-about-michael-jackson-1688465572.jpg"
+                        class="w-100" alt="descripcion">
+                    <div class="p-2">
+                        <strong>1.234 Me gusta</strong>
+                        <p>Segunda publicación</p>
                     </div>
                 </div>
-
-                <!-- Publicación 3 -->
-                <div class="row my-4">
-                    <div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto border rounded p-0">
-                        <div class="d-flex p-2">
-                            <div class="w-100 fs-4">Ford Mustang Dark Horse</div>
-                            <small class="align-bottom text-muted">12/05</small>
-                        </div>
-                        <img src="https://newfordmodel.com/wp-content/uploads/2025/01/new-2026-ford-mustang-dark-horse-release-date.jpg"
-                            class="foto-feed" alt="Mustang Car">
-                        <div class="p-2">
-                            <strong>15.204 Me gusta</strong>
-                            <p>Ahorrando desde ya para mi próximo coche 🚘🔥</p>
-                        </div>
+            </div>
+            <div class="row my-4">
+                <div class="col-12 col-md-6 mx-auto border rounded">
+                    <div class="d-flex p-2">
+                        <span class="w-100 fs-4">Tercera Publicación</span>
+                        <small class="text-muted">12/05</small>
+                    </div>
+                    <img src="https://tiermaker.com/images/templates/personajes-random-15746187/157461871682367998.jpg"
+                        class="w-100" alt="descripcion">
+                    <div class="p-2">
+                        <strong>1.234 Me gusta</strong>
+                        <p>Tercera publicación</p>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-
-    <!-- Modal: Crear nueva publicación -->
-    <div class="modal fade" id="modalNuevaPublicacion" tabindex="-1"
-        aria-labelledby="tituloModal" aria-hidden="true">
+    <!-- Modal de crear publicación -->
+    <div class="modal fade" id="modalPublicacion">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="tituloModal">Crear una nueva publicación</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <h5 class="modal-title">Nueva publicación</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <h6>Descripción:</h6>
-                    <textarea class="form-control"
-                        placeholder="Escribe el pie de foto de tu publicación aquí..."
-                        id="areaTextoPublicacion" rows="3"></textarea>
-                    <div class="row p-2">
-                        <button class="col-1 border rounded p-1 m-1 btn-light">
-                            <i class="fa-solid fa-camera"></i>
-                        </button>
-                        <button class="col-1 border rounded p-1 m-1 btn-light">
-                            <i class="fa-solid fa-location-dot"></i>
-                        </button>
-                    </div>
+                    <textarea class="form-control" placeholder="Escribe algo..." rows="3"></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success">Publicar</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-success">Publicar</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Scripts de Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
         integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
         crossorigin="anonymous"></script>
